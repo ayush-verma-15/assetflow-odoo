@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -83,8 +82,10 @@ model User {
   updatedAt              DateTime       @updatedAt
 
   allocatedAssets        Asset[]        @relation("AssetHolder")
+  allocations            Allocation[]
   bookings               Booking[]
   maintenanceRaised      Maintenance[]  @relation("RaisedBy")
+  maintenanceApproved    Maintenance[]  @relation("ApprovedBy")
   maintenanceAssigned    Maintenance[]  @relation("Technician")
   auditCycles            AuditCycle[]   @relation("Auditors")
   departmentHead         Department?    @relation("DeptHead")
@@ -97,7 +98,8 @@ model Department {
   name         String        @unique
   parentId     String?
   parent       Department?   @relation("ParentChild", fields: [parentId], references: [id])
-  headId       String?
+  children     Department[]  @relation("ParentChild")
+  headId       String?       @unique
   head         User?         @relation("DeptHead", fields: [headId], references: [id])
   status       Status        @default(ACTIVE)
   createdAt    DateTime      @default(now())
