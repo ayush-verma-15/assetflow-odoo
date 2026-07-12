@@ -237,7 +237,7 @@ Reports & Dashboard
 
 # 👨‍💻 Team Responsibilities
 
-## Ayush (Team Lead)
+## Ayush Verma(Team Lead)
 
 - Project Architecture
 - Authentication
@@ -247,7 +247,7 @@ Reports & Dashboard
 
 ---
 
-## Anuj
+## Nishankh Nehewal
 
 - Organization Setup
 - Departments
@@ -264,7 +264,7 @@ Reports & Dashboard
 
 ---
 
-## Vaibhav
+## Vaibhav Upadhyay
 
 - Asset Allocation
 - Transfers
