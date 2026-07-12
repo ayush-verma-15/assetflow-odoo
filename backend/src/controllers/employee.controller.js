@@ -109,8 +109,6 @@ exports.promoteEmployee = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
-// Update employee status (Active/Inactive)
 exports.updateEmployeeStatus = async (req, res) => {
   try {
     const { id } = req.params;
