@@ -84,6 +84,86 @@
         }
       }
     }
+    ,
+    {
+      "name": "Allocate Asset",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{asset_manager_token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/allocations/allocate",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "allocations", "allocate" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"assetId\": \"asset_id_here\",\n  \"employeeId\": \"employee_id_here\",\n  \"expectedReturn\": \"2024-12-31\",\n  \"notes\": \"Laptop for development work\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Request Transfer",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/allocations/transfer",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "allocations", "transfer" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"assetId\": \"asset_id_here\",\n  \"targetEmployeeId\": \"new_employee_id\",\n  \"reason\": \"Team restructuring\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Approve Transfer",
+      "request": {
+        "method": "PUT",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{asset_manager_token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/allocations/transfer/{{allocationId}}",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "allocations", "transfer", "{{allocationId}}" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"APPROVED\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Return Asset",
+      "request": {
+        "method": "PUT",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{asset_manager_token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/allocations/return/{{assetId}}",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "allocations", "return", "{{assetId}}" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"condition\": \"Good\",\n  \"notes\": \"Laptop returned in working condition\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Overdue Allocations",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/allocations/overdue",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "allocations", "overdue" ]
+        }
+      }
+    }
   ],
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:5000" },
