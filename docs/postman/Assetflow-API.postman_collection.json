@@ -1,0 +1,94 @@
+{
+  "info": {
+    "name": "Assetflow Odoo - Asset API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register Asset",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/assets",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "assets" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Dell XPS 13\",\n  \"serialNo\": \"SN-2024-001\",\n  \"categoryId\": \"category_id_here\",\n  \"acquisitionDate\": \"2024-01-15\",\n  \"cost\": 120000,\n  \"condition\": \"Excellent\",\n  \"location\": \"Mumbai Office - Floor 3\",\n  \"isBookable\": false,\n  \"departmentId\": \"dept_id_here\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get All Assets (filters)",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/assets?search=XPS&status=AVAILABLE&page=1&limit=10",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "assets" ],
+          "query": [
+            { "key": "search", "value": "XPS" },
+            { "key": "status", "value": "AVAILABLE" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Asset by Tag",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/assets/tag/AF-0001",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "assets", "tag", "AF-0001" ]
+        }
+      }
+    },
+    {
+      "name": "Get Asset History",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/api/assets/history/{{assetId}}",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "assets", "history", "{{assetId}}" ]
+        }
+      }
+    },
+    {
+      "name": "Update Asset Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{asset_manager_token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/assets/{{assetId}}/status",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "api", "assets", "{{assetId}}", "status" ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"UNDER_MAINTENANCE\"\n}"
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "token", "value": "<token>" },
+    { "key": "asset_manager_token", "value": "<asset_manager_token>" },
+    { "key": "assetId", "value": "asset_id_here" }
+  ]
+}
