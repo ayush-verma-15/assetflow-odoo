@@ -1,12 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { PrismaPg } = require('@prisma/adapter-pg');
 
-// Create Department (Admin only)
+const connectionString = process.env.DATABASE_URL;
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
+
 exports.createDepartment = async (req, res) => {
   try {
     const { name, parentId, headId } = req.body;
 
-    // Check if department exists
     const existing = await prisma.department.findUnique({
       where: { name }
     });
@@ -15,7 +17,6 @@ exports.createDepartment = async (req, res) => {
       return res.status(400).json({ error: 'Department already exists' });
     }
 
-    // If headId provided, check if user exists
     if (headId) {
       const user = await prisma.user.findUnique({
         where: { id: headId }
@@ -38,11 +39,10 @@ exports.createDepartment = async (req, res) => {
       }
     });
 
-    // If head assigned, update user's department
     if (headId) {
       await prisma.user.update({
         where: { id: headId },
-        data: { 
+        data: {
           departmentId: department.id,
           role: 'DEPARTMENT_HEAD'
         }
@@ -56,7 +56,6 @@ exports.createDepartment = async (req, res) => {
   }
 };
 
-// Get all departments
 exports.getDepartments = async (req, res) => {
   try {
     const departments = await prisma.department.findMany({
@@ -91,7 +90,6 @@ exports.getDepartments = async (req, res) => {
   }
 };
 
-// Get single department
 exports.getDepartment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -115,7 +113,6 @@ exports.getDepartment = async (req, res) => {
   }
 };
 
-// Update Department
 exports.updateDepartment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -135,11 +132,10 @@ exports.updateDepartment = async (req, res) => {
       }
     });
 
-    // If head changed, update old head's role
     if (headId) {
       await prisma.user.update({
         where: { id: headId },
-        data: { 
+        data: {
           departmentId: id,
           role: 'DEPARTMENT_HEAD'
         }
@@ -152,19 +148,17 @@ exports.updateDepartment = async (req, res) => {
   }
 };
 
-// Delete/Deactivate Department
 exports.deleteDepartment = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // Check if department has assets
+
     const assets = await prisma.asset.count({
       where: { departmentId: id }
     });
 
     if (assets > 0) {
-      return res.status(400).json({ 
-        error: 'Cannot delete department with assets. Deactivate instead.' 
+      return res.status(400).json({
+        error: 'Cannot delete department with assets. Deactivate instead.'
       });
     }
 

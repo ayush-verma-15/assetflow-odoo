@@ -9,6 +9,9 @@ const {
   deleteDepartment
 } = require('../controllers/department.controller');
 
+router.get('/health', (req, res) => {
+  res.json({ message: 'Department routes ready' });
+});
 router.post('/', auth, roleCheck('ADMIN'), createDepartment);
 router.get('/', auth, getDepartments);
 router.get('/:id', auth, getDepartment);
